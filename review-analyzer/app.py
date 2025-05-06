@@ -1,3 +1,5 @@
+import os
+os.environ["NLTK_DATA"] = os.path.join(os.path.expanduser("~"), "nltk_data")
 import streamlit as st
 import pandas as pd
 from analysis.analyzer import classify_feedback, extract_keywords
@@ -9,6 +11,24 @@ from nltk.sentiment import SentimentIntensityAnalyzer
 import nltk
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
+
+# Initialize NLTK data
+nltk_data_path = os.path.join(os.path.expanduser("~"), "nltk_data")
+if not os.path.exists(nltk_data_path):
+    os.makedirs(nltk_data_path)
+
+required_packages = [
+    'punkt',
+    'stopwords',
+    'averaged_perceptron_tagger',
+    'vader_lexicon'
+]
+
+for package in required_packages:
+    try:
+        nltk.download(package, download_dir=nltk_data_path)
+    except Exception as e:
+        st.error(f"Error downloading NLTK package {package}: {str(e)}")
 
 # Page configuration
 st.set_page_config(

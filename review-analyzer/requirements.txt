@@ -6,6 +6,8 @@ nltk==3.8.1
 wordcloud==1.9.3
 matplotlib==3.8.4
 transformers==4.41.2
-torch
+torch==2.7.0
 keybert==0.8.4
 sentence-transformers==2.7.0
+numpy==1.26.4
+scikit-learn==1.6.1
