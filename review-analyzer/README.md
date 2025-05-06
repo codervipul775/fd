@@ -1,52 +1,60 @@
-# Product Pulse: AI-Powered Feedback Analyzer
+# Review Analyzer
 
-This tool fetches and analyzes user reviews or tweets about any product or app. It summarizes key pain points, requests, and positive feedback, providing a weekly summary and actionable insights for Product Managers.
+An AI-powered feedback analysis tool that helps Product Managers get actionable insights from customer reviews and feedback.
 
-## 🚀 Features
+## Features
 
-- Upload CSV files of reviews or tweets
-- AI-powered sentiment analysis (VADER or DistilBERT)
-- Keyphrase extraction (KeyBERT)
-- Weekly summaries and PM priorities
-- Interactive dashboards and word clouds
+- Sentiment Analysis of reviews
+- Keyword extraction and analysis
+- Category classification
+- Weekly trend analysis
+- Interactive visualizations
+- Word cloud generation
 
-## 🟢 Deploy on Streamlit Cloud
+## How to Use
 
-1. **Push your code to GitHub** (already done)
-2. **Go to [Streamlit Cloud](https://streamlit.io/cloud)** and click 'New app'
-3. **Connect your GitHub repo**: `https://github.com/codervipul775/fd.git`
-4. **Set the main file path**: `review-analyzer/app.py`
-5. **Set the requirements file**: `review-analyzer/requirements.txt`
-6. **(Optional) Add a sample CSV in `review-analyzer/data/` for demo**
-7. **Click Deploy!**
+1. Upload a CSV file containing your reviews
+2. Select the column containing the review text
+3. (Optional) Select a date column for weekly analysis
+4. View the analysis results in different tabs:
+   - Overview: Key metrics and sentiment distribution
+   - Analysis: Detailed sentiment and subjectivity analysis
+   - Weekly Summary: Week-by-week insights (if date column provided)
+   - Details: Individual review analysis
 
-## 📝 Requirements
+## Input Format
 
-All dependencies are listed in `requirements.txt` and will be installed automatically by Streamlit Cloud.
+The CSV file should contain at least one column with review text. The column name should contain words like 'review', 'text', or 'comment'.
 
-## 🖥️ Local Development
+## Live Demo
 
-```bash
-cd review-analyzer
-pip install -r requirements.txt
-streamlit run app.py
-```
+Visit the live app at: [Your Streamlit Cloud URL will appear here after deployment]
 
-## 📦 Folder Structure
+## Local Development
 
-```
-review-analyzer/
-├── app.py
-├── requirements.txt
-├── README.md
-├── analysis/
-│   └── analyzer.py
-├── utils/
-│   └── summarizer.py
-├── data/
-│   └── reviews.csv (optional sample)
-```
+1. Clone the repository
+2. Create a virtual environment:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. Run the app:
+   ```bash
+   streamlit run app.py
+   ```
 
-## 📣 Contact
+## Dependencies
 
-For questions or improvements, open an issue or pull request on GitHub!
+- Streamlit
+- Pandas
+- NLTK
+- Plotly
+- WordCloud
+- Transformers
+- PyTorch
+- KeyBERT
+- Sentence Transformers
