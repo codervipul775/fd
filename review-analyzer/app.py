@@ -69,6 +69,7 @@ if uploaded_file:
     # Step 2: Analysis
     st.subheader("Step 2: Analysis")
     with st.spinner("Analyzing reviews..."):
+        nltk.download('vader_lexicon')
         sia = SentimentIntensityAnalyzer()
         def fast_vader_sentiment(text):
             scores = sia.polarity_scores(text)
