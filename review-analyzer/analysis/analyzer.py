@@ -135,3 +135,26 @@ def analyze_review(text):
         'word_count': word_count,
         'avg_sentence_length': word_count / len(sentences) if sentences else 0
     }
+
+def batch_get_sentiment(texts, batch_size=32):
+    results = []
+    for i in range(0, len(texts), batch_size):
+        batch = [t[:512] for t in texts[i:i+batch_size]]
+        try:
+            batch_results = sentiment_model(batch)
+            for result in batch_results:
+                label = result['label']
+                score = result['score']
+                if label == 'POSITIVE' and score > 0.85:
+                    results.append('Very Positive')
+                elif label == 'POSITIVE':
+                    results.append('Positive')
+                elif label == 'NEGATIVE' and score > 0.85:
+                    results.append('Very Negative')
+                elif label == 'NEGATIVE':
+                    results.append('Negative')
+                else:
+                    results.append('Neutral')
+        except Exception:
+            results.extend(['Neutral'] * len(batch))
+    return results

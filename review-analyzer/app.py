@@ -2,7 +2,7 @@ import os
 os.environ["NLTK_DATA"] = os.path.join(os.path.expanduser("~"), "nltk_data")
 import streamlit as st
 import pandas as pd
-from analysis.analyzer import classify_feedback, extract_keywords
+from analysis.analyzer import classify_feedback, extract_keywords, batch_get_sentiment
 from utils.summarizer import generate_summary
 import plotly.express as px
 import plotly.graph_objects as go
@@ -86,24 +86,33 @@ if uploaded_file:
     max_rows = st.sidebar.number_input("Max rows to analyze", min_value=500, max_value=len(work_df), value=min(5000, len(work_df)))
     work_df = work_df.head(max_rows)
 
+    # Add a toggle for sentiment analysis method
+    sentiment_method = st.sidebar.selectbox(
+        "Sentiment Analysis Method",
+        ["Fast (VADER)", "Accurate (Transformer)"]
+    )
+
     # Step 2: Analysis
     st.subheader("Step 2: Analysis")
     with st.spinner("Analyzing reviews..."):
-        sia = SentimentIntensityAnalyzer()
-        def fast_vader_sentiment(text):
-            scores = sia.polarity_scores(text)
-            compound = scores['compound']
-            if compound >= 0.5:
-                return 'Very Positive'
-            elif compound >= 0.05:
-                return 'Positive'
-            elif compound <= -0.5:
-                return 'Very Negative'
-            elif compound <= -0.05:
-                return 'Negative'
-            else:
-                return 'Neutral'
-        work_df['sentiment'] = [fast_vader_sentiment(text) for text in work_df['review']]
+        if sentiment_method == "Accurate (Transformer)":
+            work_df['sentiment'] = batch_get_sentiment(work_df['review'].tolist())
+        else:
+            sia = SentimentIntensityAnalyzer()
+            def fast_vader_sentiment(text):
+                scores = sia.polarity_scores(text)
+                compound = scores['compound']
+                if compound >= 0.5:
+                    return 'Very Positive'
+                elif compound >= 0.05:
+                    return 'Positive'
+                elif compound <= -0.5:
+                    return 'Very Negative'
+                elif compound <= -0.05:
+                    return 'Negative'
+                else:
+                    return 'Neutral'
+            work_df['sentiment'] = [fast_vader_sentiment(text) for text in work_df['review']]
         work_df['category'] = [classify_feedback(text) for text in work_df['review']]
         work_df['keywords'] = [extract_keywords(text) for text in work_df['review']]
         work_df['word_count'] = work_df['review'].str.split().str.len()
